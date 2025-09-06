@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     isMobileNumberVerified:{
         type:Boolean,
         default:false,
+    },
+    maritalStatus:{
+        type:String,
+        enum:["MARRIED","UNMARRIED"]
     }
 });
 

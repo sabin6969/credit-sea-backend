@@ -191,9 +191,56 @@ const verifyOtp = asyncHandler(async (req,res)=>{
 });
 
 
+const updateUserDetails = asyncHandler(async (req,res)=>{
+
+    console.log("Req Received!");
+    const result = validationResult(req);
+
+    if(!result.isEmpty()){
+        throw new ErrorResponse(
+            ApiStatusCode.badRequest,
+            `Validation error: ${result.array().at(0).msg}`,
+            result.array(),
+        )
+    }
+
+    const {firstName,lastName,gender,dateOfBirth,maritalStatus} = req.body;
+
+   const user =  await User.findOneAndUpdate({mobileNumber:req.mobileNumber},{$set:{
+        firstName,
+        lastName,
+        gender,
+        dateOfBirth,
+        maritalStatus,
+    }},{new:true}).select("-password");
+    
+    if(!user){
+        throw new ErrorResponse(
+            ApiResponse.internalServerError,
+            `Something went wrong while updating user's profile`,
+        )
+    }
+    else{
+        res
+        .status(
+            ApiStatusCode.ok
+        ).json(
+            new ApiResponse(
+                ApiStatusCode.ok,
+                `Successfully updated profile`,
+                user,
+            )
+        )
+    }
+
+});
+
+
+
 export {
     login,
     createUser,
     requestAOtp,
     verifyOtp,
+    updateUserDetails,
 };
