@@ -38,6 +38,15 @@ const login = asyncHandler(async(req,res)=>{
         )
     }
 
+    const isMobileNumberVerified = user.isMobileNumberVerified;
+    
+    if(!isMobileNumberVerified){
+        throw new ErrorResponse(
+            ApiStatusCode.forbidden,
+            `Please verify your mobile number before signup`,
+        )
+    }
+
     const jwt = jsonwebtoken.sign({mobileNumber:mobileNumber},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRY});
 
     res
