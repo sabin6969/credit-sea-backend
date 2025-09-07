@@ -5,6 +5,7 @@ import asyncHandler from "../utils/async.handler.js";
 import ErrorResponse from "../utils/error.response.js";
 import ApiStatusCode from "../utils/api.status.code.js";
 import ApiResponse from "../utils/api.response.js";
+import sendPushNotification from "../notification/send.push.notification.js";
 
 
 const applyForLoan = asyncHandler(async(req,res)=>{
@@ -73,8 +74,40 @@ const getLoanDetailsByID = asyncHandler(async (req,res)=>{
     )
 });
 
+const updateLoanStatus = asyncHandler(async (req,res)=>{
+
+    const result = validationResult(req);
+
+    if(!result.isEmpty()){
+        throw new ErrorResponse(
+            ApiStatusCode.badRequest,
+            `Validation error: ${result.array().at(0).msg}`,
+            result.array()
+        )
+    }
+
+    const {status} = req.body;
+    const {id} = req.params;
+
+    const loan = await Loan.findByIdAndUpdate(
+        id,
+        {$set:{status}},
+        {new:true}
+    );
+
+    res
+    .status(ApiStatusCode.ok)
+    .json(
+        new ApiResponse(
+            ApiStatusCode.ok,
+            `Successfully updated loan status`,
+            loan,
+        )
+    )
+});
 
 export {
     applyForLoan,
     getLoanDetailsByID,
+    updateLoanStatus,
 }
