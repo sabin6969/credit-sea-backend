@@ -33,8 +33,8 @@ It provides APIs for user authentication, profile management, and loan applicati
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/creditsea-backend.git
-cd creditsea-backend
+git clone https://github.com/sabin6969/credit-sea-backend
+cd credit-sea-backend
 ```
 
 ### 2. Install Dependencies
