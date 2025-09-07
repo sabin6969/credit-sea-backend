@@ -132,7 +132,7 @@ POST /api/user/verifyOtp
 #### 5. Update User Details (Protected)
 ```http
 POST /api/user/update
-Authorization: Bearer <JWT_TOKEN>
+Authorization: <JWT_TOKEN>
 ```
 **Body (any combination of these fields)**
 ```json
@@ -154,7 +154,7 @@ Authorization: Bearer <JWT_TOKEN>
 #### 1. Apply for Loan ( Protected)
 ```http
 POST /api/loan/apply
-Authorization: Bearer <JWT_TOKEN>
+Authorization: <JWT_TOKEN>
 ```
 **Body**
 ```json
@@ -198,7 +198,6 @@ POST /api/loan/:id/update
 ## Scripts
 
 - `npm run dev` → Start development server with Nodemon  
-- `npm start` → Start production server  
 
 ---
 
