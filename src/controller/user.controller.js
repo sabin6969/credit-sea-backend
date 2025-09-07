@@ -193,8 +193,8 @@ const verifyOtp = asyncHandler(async (req,res)=>{
 
 const updateUserDetails = asyncHandler(async (req,res)=>{
 
-    console.log("Req Received!");
     const result = validationResult(req);
+
 
     if(!result.isEmpty()){
         throw new ErrorResponse(
@@ -204,15 +204,19 @@ const updateUserDetails = asyncHandler(async (req,res)=>{
         )
     }
 
-    const {firstName,lastName,gender,dateOfBirth,maritalStatus} = req.body;
+    const {firstName,lastName,gender,dateOfBirth,maritalStatus,email,panNumber} = req.body;
 
-   const user =  await User.findOneAndUpdate({mobileNumber:req.mobileNumber},{$set:{
-        firstName,
-        lastName,
-        gender,
-        dateOfBirth,
-        maritalStatus,
-    }},{new:true}).select("-password");
+      const updateFields = {};
+  if (firstName) updateFields.firstName = firstName;
+  if (lastName) updateFields.lastName = lastName;
+  if (gender) updateFields.gender = gender;
+  if (dateOfBirth) updateFields.dateOfBirth = dateOfBirth;
+  if (maritalStatus) updateFields.maritalStatus = maritalStatus;
+  if (email) updateFields.email = email;
+  if (panNumber) updateFields.panNumber = panNumber;
+
+
+   const user =  await User.findOneAndUpdate({mobileNumber:req.mobileNumber},{$set:updateFields,},{new:true}).select("-password");
     
     if(!user){
         throw new ErrorResponse(
@@ -234,7 +238,6 @@ const updateUserDetails = asyncHandler(async (req,res)=>{
     }
 
 });
-
 
 
 export {
