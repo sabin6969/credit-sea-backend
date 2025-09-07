@@ -10,6 +10,7 @@ const loanSchema = new mongoose.Schema({
     purposeOfLoan:{
         type:String,
         require:true,
+        enum:[ "Personal Loan","Educational Loan","Vehicle Loan","Home Loan"]
     },
     principalAmount:{
         type:Number,

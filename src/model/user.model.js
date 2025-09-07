@@ -44,6 +44,11 @@ const userSchema = new mongoose.Schema({
     maritalStatus:{
         type:String,
         enum:["MARRIED","UNMARRIED"]
+    },
+    fcmToken:{
+        type:String,
+        require:false,
+        default:null
     }
 });
 

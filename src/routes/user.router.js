@@ -11,6 +11,7 @@ userRouter.post(
     "/login",
     body("mobileNumber").notEmpty().withMessage("Mobile number is required"),
     body("password").notEmpty().withMessage("Password is required"),
+    body("fcmToken"),
     login,
 );
 
@@ -18,6 +19,7 @@ userRouter.post(
     "/createAccount",
     body("mobileNumber").notEmpty().withMessage("Mobile number is required"),
     body("password").notEmpty().withMessage("Password is required"),
+    body("fcmToken"),
     createUser,
 );
 

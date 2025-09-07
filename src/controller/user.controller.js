@@ -18,17 +18,19 @@ const login = asyncHandler(async(req,res)=>{
             result.array(),
         )
     }
-    const {mobileNumber,password} = req.body;
-
+    const {mobileNumber,password,fcmToken} = req.body;
     
     const user = await User.findOne({mobileNumber});
-
+    
     if(!user){
         throw new ErrorResponse(
             ApiStatusCode.badRequest,
             `There is no any account associated with "${mobileNumber}" number.`
         )
     }   
+
+    user.fcmToken = fcmToken;
+    await user.save();
 
     const isPasswordValid = await user.isPasswordValid(password);
     if(!isPasswordValid){
@@ -38,14 +40,6 @@ const login = asyncHandler(async(req,res)=>{
         )
     }
 
-    const isMobileNumberVerified = user.isMobileNumberVerified;
-    
-    if(!isMobileNumberVerified){
-        throw new ErrorResponse(
-            ApiStatusCode.forbidden,
-            `Please verify your mobile number before signup`,
-        )
-    }
 
     const jwt = jsonwebtoken.sign({mobileNumber:mobileNumber},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRY});
 
@@ -74,7 +68,7 @@ const createUser = asyncHandler(async (req,res)=>{
         )
     }
 
-    const {mobileNumber,password} = req.body;
+    const {mobileNumber,password,fcmToken,isMobileNumberVerified} = req.body;
 
     const existingUser = await User.findOne({mobileNumber});
     if(existingUser){
@@ -85,7 +79,7 @@ const createUser = asyncHandler(async (req,res)=>{
         )
     }
 
-    const user = await User.create({mobileNumber,password});
+    const user = await User.create({mobileNumber,password,fcmToken,isMobileNumberVerified});
    if(user){
         res
         .status(

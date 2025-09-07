@@ -95,13 +95,16 @@ const updateLoanStatus = asyncHandler(async (req,res)=>{
         {new:true}
     );
 
+    const user = await User.findById(loan.requestedBy);
+    sendPushNotification(user.fcmToken,`Loan Status Update, ${user.firstName}`,`The status of your requested loan updated to ${status}`)
+
     res
     .status(ApiStatusCode.ok)
     .json(
         new ApiResponse(
             ApiStatusCode.ok,
             `Successfully updated loan status`,
-            loan,
+            loan,   
         )
     )
 });

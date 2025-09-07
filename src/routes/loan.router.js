@@ -11,6 +11,7 @@ loanRouter.post(
     "/apply",
     auth,
     body("purposeOfLoan").notEmpty().withMessage("Purpose of loan should be specified"),
+    body("purposeOfLoan").isIn(["Personal Loan","Educational Loan","Vehicle Loan","Home Loan"]).withMessage("Purpose of loan should be of Personan, Educational,Vehicle, Home Loan"),
     body("principalAmount").notEmpty().withMessage("Principal amount is required"),
     body("principalAmount").isNumeric().withMessage("Principal amout should be numeric"),
     body("tenure").notEmpty().withMessage("Tenure is required"),
